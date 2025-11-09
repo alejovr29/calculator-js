@@ -1,61 +1,90 @@
 let operation = []
-let number=0
+let number='0'
 let operator=0
-let result_operation=0
+let newOperator=0
+let resultOperation='0'
+let isDecimal=false
 
 function calculate(operation){
     
 }
 
 function clearScreen(){
-    screenValue=document.getElementById('screen_text')
+    screenValue=document.getElementById('screen-text')
     screenValue.textContent = '0'
-    number = 0
-    result_operation=0
+    number = '0'
+    resultOperation='0'
+    isDecimal=false
 
 }
 
 function showScreen(newValue){
-    screenValue=document.getElementById('screen_text')
+    screenValue=document.getElementById('screen-text')
     screenValue.textContent = newValue;
 }
 
-let buttons = document.querySelector('.calculator_body')
+function checkPoint(number){
+    if (number.includes('.')){
+        console.log('It has already a point.')
+        return true;
+}
+}
+
+let buttons = document.querySelector('.calculator-body')
 
 buttons.addEventListener('click', (event)=>{
         const element = event.target
 
         /* This if checks if the button is a number and assign it to the variable number */
-        if (element.classList.contains('btn_number')){
+        if (element.classList.contains('btn-number')){
             const obtainedNumber= element.innerHTML;
-            console.log('Obtuviste un número, el cuál es'+ ' ' + obtainedNumber)
-            number==0 ? number=obtainedNumber : number=(number+obtainedNumber)
+            console.log('You obtained a number, which is: '+ ' ' + obtainedNumber)
+            //number==0 ? number=obtainedNumber : number=(number+obtainedNumber)
+            if (number=='0'){
+                if(checkPoint(number)){
+                    number=(number+obtainedNumber);
+                }
+                else{
+                    number=obtainedNumber;
+                }
+            }
+            else{
+                number=(number+obtainedNumber);
+            }
+
+
             showScreen(number)
-            console.log('El valor de número actual es '+ number)
+            console.log('The new value is: '+ number)
         }
         /* This if checks if the button is C and clear it to default */
         else if (element.id === 'C'){
-            console.log('Borraste toda la pantalla porque le diste click a '+ ' ' + element.innerHTML)
+            console.log('You just erased the screen because you clicked on '+ ' ' + element.innerHTML)
             clearScreen()
         }
 
         else if (element.id==='point'){
-            valuePoint=number+element.innerHTML
-            showScreen(valuePoint)
+            if (!(checkPoint(number))){
+                number=number+element.innerHTML;
+                showScreen(number);
+            }
+            else{
+                console.log('Point found.');
+        }
         }
 })
 
 
 
+
 /* Code below was meant for what I had several sections likely having the same class name, therefore itinerating along the results was the idea to avoid skipping anything*/
 
-// let buttons = document.querySelectorAll('.calculator_body')
+// let buttons = document.querySelectorAll('.calculator-body')
 // buttons.forEach(button =>{
 //     button.addEventListener('click', (event)=>{
 //         const element = event.target
 
 //         /* This if checks if the button is a number and assign it to the variable number */
-//         if (element.classList.contains('btn_number')){
+//         if (element.classList.contains('btn-number')){
 //             console.log('Obtuviste un número, el cuál es'+ ' ' + element.innerHTML)
 //             number=element.innerHTML;
 //             return number

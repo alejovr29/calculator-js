@@ -7,7 +7,7 @@ body{
   font-family: Georgia, 'Times New Roman', Times, serif;
 
 }
-.calculator_body{
+.calculator-body{
     margin:0 0 0 40px;
     background-color: rgb(187, 211, 238);
     width: 300px;
@@ -25,13 +25,13 @@ body{
     font-size: 20px;
         box-shadow: inset 0px 0px 8px rgba(0, 0, 0, 0.5);
 }
-#screen_text{
+#screen-text{
     text-align: end;
     margin-right: 20px;
 }
 
 
-.numbers_operators{
+.numbers-operators{
     display: flex;
     height: 150px;
     margin-top: 10px;
@@ -72,7 +72,7 @@ body{
 }
 }
 
-#equal_btn{
+#equal-btn{
     grid-row: span 2;
     height: 95%;
 }
