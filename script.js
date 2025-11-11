@@ -3,18 +3,34 @@ let number='0'
 let operator=0
 let newOperator=0
 let resultOperation='0'
-let isDecimal=false
+let firstOperand= null;
+let secondOperand=null;
+let waitingOperator=true;
 
-function calculate(operation){
-    
+function calculate(num1, num2, operator){
+
+    switch(operator){
+        case '+':
+            return num1 + num2;
+        case '-':
+            return num1-num2;
+        case 'x':
+            return num1*num2;
+        case 'operator.id==="divide"':
+            return num1/num2;
+    }
 }
+
+// function add(firstNumber,secondNumber){
+//     resultOperation=(firstNumber+secondNumber);
+//     return resultOperation;
+// }
 
 function clearScreen(){
     screenValue=document.getElementById('screen-text')
     screenValue.textContent = '0'
     number = '0'
     resultOperation='0'
-    isDecimal=false
 
 }
 
@@ -67,10 +83,20 @@ buttons.addEventListener('click', (event)=>{
                 number=number+element.innerHTML;
                 showScreen(number);
             }
-            else{
-                console.log('Point found.');
         }
+
+        else if (element.classList.contains('operators')){
+            console.log('Hola presionaste un operador');
         }
+
+        // else if(element.id==='addition'){
+        //     newOperator=+
+        //     operation.push(Number(number),newOperator)
+        //     showScreen((operation[0]+operation[1]))
+        //     operation.push(Number(number))
+        //     resultOperation=(operation[0]+operation[2])
+        //     showScreen(resultOperation)
+        // }
 })
 
 
