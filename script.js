@@ -1,7 +1,6 @@
 let operation = []
 let number='0'
 let operator=0
-let newOperator=0
 let resultOperation='0'
 let firstOperand= null;
 let secondOperand=null;
@@ -14,17 +13,12 @@ function calculate(num1, num2, operator){
             return num1 + num2;
         case '-':
             return num1-num2;
-        case 'x':
+        case '*':
             return num1*num2;
-        case 'operator.id==="divide"':
+        case '/':
             return num1/num2;
     }
 }
-
-// function add(firstNumber,secondNumber){
-//     resultOperation=(firstNumber+secondNumber);
-//     return resultOperation;
-// }
 
 function clearScreen(){
     screenValue=document.getElementById('screen-text')
@@ -35,7 +29,7 @@ function clearScreen(){
 }
 
 function showScreen(newValue){
-    screenValue=document.getElementById('screen-text')
+    const screenValue=document.getElementById('screen-text')
     screenValue.textContent = newValue;
 }
 
@@ -46,16 +40,15 @@ function checkPoint(number){
 }
 }
 
-let buttons = document.querySelector('.calculator-body')
+let buttons = document.querySelector('.calculator-body');
 
 buttons.addEventListener('click', (event)=>{
-        const element = event.target
+        const element = event.target;
 
         /* This if checks if the button is a number and assign it to the variable number */
         if (element.classList.contains('btn-number')){
             const obtainedNumber= element.innerHTML;
-            console.log('You obtained a number, which is: '+ ' ' + obtainedNumber)
-            //number==0 ? number=obtainedNumber : number=(number+obtainedNumber)
+            console.log('You obtained a number, which is: '+ ' ' + obtainedNumber);
             if (number=='0'){
                 if(checkPoint(number)){
                     number=(number+obtainedNumber);
@@ -67,10 +60,8 @@ buttons.addEventListener('click', (event)=>{
             else{
                 number=(number+obtainedNumber);
             }
-
-
-            showScreen(number)
-            console.log('The new value is: '+ number)
+            showScreen(number);
+            console.log('The new value is: '+ number);
         }
         /* This if checks if the button is C and clear it to default */
         else if (element.id === 'C'){
@@ -80,23 +71,41 @@ buttons.addEventListener('click', (event)=>{
 
         else if (element.id==='point'){
             if (!(checkPoint(number))){
-                number=number+element.innerHTML;
+                number+=element.innerHTML;
                 showScreen(number);
             }
         }
 
-        else if (element.classList.contains('operators')){
+        else if (element.classList.contains('operator')){
             console.log('Hola presionaste un operador');
-        }
+            operator=element.innerHTML;
+            firstOperand=parseFloat(number);
+            waitingOperator=false;
+            showScreen(firstOperand+operator)
+            console.log('El número del primer operando es: '+firstOperand+'El operador es: '+operator)
+            number='0'
+            }
+        if (waitingOperator===false){
+                if (firstOperand && element.classList.contains('btn-number')){
+                console.log('Perro')
+                secondOperand=parseFloat(number);
+                console.log('El valor del segundo operando es: '+secondOperand)
+                    showScreen(secondOperand)
+                }
+                else if(element.classList.contains('operator')){
+                    operator=element.innerHTML;
+                    console.log('cambiaste el operador por: '+operator)
+                }
+                else if(((secondOperand) && (element.classList.contains('operator') || element.id ==='equal-btn'))){
+                resultOperation=calculate(firstOperand,secondOperand,operator);
+                console.log('El resultado de la operación es: '+resultOperation);
+                showScreen(resultOperation);
+                number=firstOperand=resultOperation;
+                secondOperand=null;
+                }
+            }
+            
 
-        // else if(element.id==='addition'){
-        //     newOperator=+
-        //     operation.push(Number(number),newOperator)
-        //     showScreen((operation[0]+operation[1]))
-        //     operation.push(Number(number))
-        //     resultOperation=(operation[0]+operation[2])
-        //     showScreen(resultOperation)
-        // }
 })
 
 
