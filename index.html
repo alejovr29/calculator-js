@@ -16,7 +16,8 @@
 
 <section class="calculator-body">
     <div id="screen">
-        <p id="screen-text">0</p>
+        <p class="screen-text" id="screen-top">0</p>
+        <p class="screen-text" id="screen-bottom">0</p>
     </div>
     <div class="numbers-operators">
     <div class="numbers">
@@ -35,13 +36,13 @@
         <button id="point">.</button>
     </div>
     <div class="operators">
-        <button>÷</button>
-        <button>⌫</button>
-        <button>X</button>
-        <button>%</button>
-        <button>+</button>
+        <button class="operator" id="divide">/</button>
+        <button id="backspace">⌫</button>
+        <button class="operator" id="multiply">*</button>
+        <button class="operator" id="percentage">%</button>
+        <button class="operator" id="addition">+</button>
         <button id="equal-btn">=</button>
-        <button>-</button>
+        <button class="operator" id="subtract">-</button>
     </div>
     </div>
 </section>
