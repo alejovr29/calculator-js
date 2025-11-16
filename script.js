@@ -1,6 +1,6 @@
 let operation = []
 let number='0'
-let operator=0
+let operator=null;
 let resultOperation='0'
 let firstOperand= null;
 let secondOperand=null;
@@ -8,15 +8,18 @@ let waitingOperator=true;
 
 function calculate(num1, num2, operator){
 
+    const n1 = parseFloat(num1) /* Avoid conflicts converting it to float numbers*/
+    const n2 = parseFloat(num2)
+
     switch(operator){
         case '+':
-            return num1 + num2;
+            return n1 + n2;
         case '-':
-            return num1-num2;
+            return n1-n2;
         case '*':
-            return num1*num2;
+            return n1*n2;
         case '/':
-            return num1/num2;
+            return n2===0 ? 'Error: Can not divide by zero': n1/n2;
     }
 }
 
@@ -28,9 +31,11 @@ function clearScreen(){
 
 }
 
-function showScreen(newValue){
-    const screenValue=document.getElementById('screen-text')
-    screenValue.textContent = newValue;
+function showScreen(operation='0',newValue='0'){
+    const screenTop=document.getElementById('screen-top');
+    const screenBottom=document.getElementById('screen-bottom');
+    screenTop.textContent = operation;
+    screenBottom.textContent = newValue;
 }
 
 function checkPoint(number){
@@ -80,6 +85,7 @@ buttons.addEventListener('click', (event)=>{
             console.log('Hola presionaste un operador');
             operator=element.innerHTML;
             firstOperand=parseFloat(number);
+
             waitingOperator=false;
             showScreen(firstOperand+operator)
             console.log('El número del primer operando es: '+firstOperand+'El operador es: '+operator)
@@ -92,9 +98,10 @@ buttons.addEventListener('click', (event)=>{
                 console.log('El valor del segundo operando es: '+secondOperand)
                     showScreen(secondOperand)
                 }
-                else if(element.classList.contains('operator')){
+                else if(firstOperand && operator){
                     operator=element.innerHTML;
                     console.log('cambiaste el operador por: '+operator)
+                    return
                 }
                 else if(((secondOperand) && (element.classList.contains('operator') || element.id ==='equal-btn'))){
                 resultOperation=calculate(firstOperand,secondOperand,operator);
