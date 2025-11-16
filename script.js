@@ -1,7 +1,9 @@
 let number='0'
 let operator=null;
-let firstOperand= null;
+let firstOperand=null;
+let secondOperand=null;
 let waitingforNewNumber=false;
+let result = null;
 
 function calculate(num1, num2, operator){
 
@@ -25,7 +27,9 @@ function clearScreen(){
     number = '0';
     operator=null;
     firstOperand= null;
+    secondOperand= null;
     waitingforNewNumber=false;
+    result = null;
 }
 
 function showScreen(newValue='0',operation='0'){
@@ -40,6 +44,25 @@ function checkPoint(number){
         console.log('It has already a point.')
         return true;
 }
+}
+
+function listOperation(){
+    if(firstOperand===null){
+        console.log('Codigo 1')
+        return '0';
+    }
+    else if(operator!==null && waitingforNewNumber===true){
+        console.log('Codigo 2')
+        return firstOperand+operator;
+    }
+    else if(result === null){
+        console.log('Codigo 3')
+        return firstOperand+operator;
+    }
+    else if(result !== null){
+        console.log('Codigo 4')
+        return firstOperand+operator+secondOperand+'=';
+    }
 }
 
 let buttons = document.querySelector('.calculator-body');
@@ -57,6 +80,7 @@ buttons.addEventListener('click', (event)=>{
                 number = obtainedNumber;
                 console.log('El valor del segundo operando es:'+number);
                 waitingforNewNumber=false;
+                //showScreen(number,listOperation());
             }
             else if (number=='0'){
                 if(checkPoint(number)){
@@ -69,7 +93,7 @@ buttons.addEventListener('click', (event)=>{
             else{
                 number=(number+obtainedNumber);
             }
-            showScreen(number);
+            showScreen(number,listOperation());
         }
         /* This if checks if the button is C and clear it to default */
         else if (element.id === 'C'){
@@ -85,7 +109,7 @@ buttons.addEventListener('click', (event)=>{
             else if (!(checkPoint(number))){
                 number+=element.innerHTML;
             }
-            showScreen(number);
+            showScreen(number,listOperation());
         }
         else if (element.classList.contains('operator')){
             console.log('Hola presionaste un operador');
@@ -98,38 +122,42 @@ buttons.addEventListener('click', (event)=>{
             console.log('You changed the operator for:'+operator)
         }
 
+        /* If ready for calculate */
         if(firstOperand!==null && operator!==null && waitingforNewNumber===false){
-            //const operation = (firstOperand,numberValue,operator);
-            const result = calculate(firstOperand,numberValue,operator)
+            secondOperand=numberValue;
+            result = calculate(firstOperand,secondOperand,operator)
+            showScreen(result,listOperation())
 
-            showScreen(result,(firstOperand,numberValue,operator,'='))
 
             firstOperand=result;
             number=String(result);
+            result=null;
+
         } else if(firstOperand===null){
             firstOperand=numberValue;
-            console.log('Frist Operand value is: '+firstOperand);
-            showScreen(firstOperand)
         }
 
         operator=nextOperator;
         waitingforNewNumber=true;
         console.log(`First number is ${firstOperand} and operator is ${operator}`)
-        showScreen((firstOperand+operator))
+        showScreen(firstOperand,listOperation())
     }
     else if(element.id==='equal-btn'){
         if(firstOperand!==null && operator !== null && waitingforNewNumber===false){
             const numberValue=parseFloat(number);
-            //const operation = (firstOperand,numberValue,operator);
-            const result = calculate(firstOperand,numberValue,operator)
+            secondOperand=numberValue
+            result = calculate(firstOperand,secondOperand,operator)
+            showScreen(result,listOperation())
 
-            showScreen(result,(firstOperand,numberValue,operator));
+            //showScreen(result,(`${firstOperand} ${operator} ${numberValue} =`));
 
             /* Reset all operations */
             firstOperand=null;
+            secondOperand=null;
             operator=null;
             number=String(result);
             waitingforNewNumber=false;
+            result=null;
         }
     }
         // else if (element.classList.contains('operator')){
