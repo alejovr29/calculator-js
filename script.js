@@ -87,37 +87,81 @@ buttons.addEventListener('click', (event)=>{
             }
             showScreen(number);
         }
-
         else if (element.classList.contains('operator')){
             console.log('Hola presionaste un operador');
-            operator=element.innerHTML;
-            firstOperand=parseFloat(number);
+            const nextOperator=element.innerHTML;
+            const numberValue=parseFloat(number);
 
-            waitingOperator=false;
-            showScreen(firstOperand,firstOperand+operator)
-            console.log('El número del primer operando es: '+firstOperand+'El operador es: '+operator)
-            number='0'
-            }
-        if (waitingOperator===false){
-                if (firstOperand && element.classList.contains('btn-number')){
-                console.log('Perro')
-                secondOperand=parseFloat(number);
-                console.log('El valor del segundo operando es: '+secondOperand)
-                    showScreen(secondOperand,firstOperand+operator)
-                }
-                else if(firstOperand && operator){
-                    operator=element.innerHTML;
-                    console.log('cambiaste el operador por: '+operator)
-                    return
-                }
-                else if(((secondOperand) && (element.classList.contains('operator') || element.id ==='equal-btn'))){
-                resultOperation=calculate(firstOperand,secondOperand,operator);
-                console.log('El resultado de la operación es: '+resultOperation);
-                showScreen(resultOperation,firstOperand+operator+secondOperand+'=');
-                number=firstOperand=resultOperation;
-                secondOperand=null;
-                }
-            }
+        /* Replace operator value*/
+        if(firstOperand!==null && waitingforNewNumber===true){
+            operator=nextOperator;
+            console.log('You changed the operator for:'+operator)
+        }
+
+        if(firstOperand!==null && operator!==null && waitingforNewNumber===false){
+            //const operation = (firstOperand,numberValue,operator);
+            const result = calculate(firstOperand,numberValue,operator)
+
+            showScreen(result,(firstOperand,numberValue,operator,'='))
+
+            firstOperand=result;
+            number=String(result);
+        } else if(firstOperand===null){
+            firstOperand=numberValue;
+            console.log('Frist Operand value is: '+firstOperand);
+            showScreen(firstOperand)
+        }
+
+        operator=nextOperator;
+        waitingforNewNumber=true;
+        console.log(`First number is ${firstOperand} and operator is ${operator}`)
+        showScreen((firstOperand+operator))
+    }
+    else if(element.id==='equal-btn'){
+        if(firstOperand!==null && operator !== null && waitingforNewNumber===false){
+            const numberValue=parseFloat(number);
+            //const operation = (firstOperand,numberValue,operator);
+            const result = calculate(firstOperand,numberValue,operator)
+
+            showScreen(result,(firstOperand,numberValue,operator));
+
+            /* Reset all operations */
+            firstOperand=null;
+            operator=null;
+            number=String(result);
+            waitingforNewNumber=false;
+        }
+    }
+        // else if (element.classList.contains('operator')){
+        //     console.log('Hola presionaste un operador');
+        //     operator=element.innerHTML;
+        //     firstOperand=parseFloat(number);
+
+        //     waitingOperator=false;
+        //     showScreen(firstOperand,firstOperand+operator)
+        //     console.log('El número del primer operando es: '+firstOperand+'El operador es: '+operator)
+        //     number='0'
+        //     }
+        // if (waitingOperator===false){
+        //         if (firstOperand && element.classList.contains('btn-number')){
+        //         console.log('Perro')
+        //         secondOperand=parseFloat(number);
+        //         console.log('El valor del segundo operando es: '+secondOperand)
+        //             showScreen(secondOperand,firstOperand+operator)
+        //         }
+        //         else if(firstOperand && operator){
+        //             operator=element.innerHTML;
+        //             console.log('cambiaste el operador por: '+operator)
+        //             return
+        //         }
+        //         else if(((secondOperand) && (element.classList.contains('operator') || element.id ==='equal-btn'))){
+        //         resultOperation=calculate(firstOperand,secondOperand,operator);
+        //         console.log('El resultado de la operación es: '+resultOperation);
+        //         showScreen(resultOperation,firstOperand+operator+secondOperand+'=');
+        //         number=firstOperand=resultOperation;
+        //         secondOperand=null;
+        //         }
+        //     }
             
 
 })
