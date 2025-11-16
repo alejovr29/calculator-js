@@ -1,10 +1,7 @@
-let operation = []
 let number='0'
 let operator=null;
-let resultOperation='0'
 let firstOperand= null;
-let secondOperand=null;
-let waitingOperator=true;
+let waitingforNewNumber=false;
 
 function calculate(num1, num2, operator){
 
@@ -24,14 +21,14 @@ function calculate(num1, num2, operator){
 }
 
 function clearScreen(){
-    screenValue=document.getElementById('screen-text')
-    screenValue.textContent = '0'
-    number = '0'
-    resultOperation='0'
-
+    showScreen();
+    number = '0';
+    operator=null;
+    firstOperand= null;
+    waitingforNewNumber=false;
 }
 
-function showScreen(operation='0',newValue='0'){
+function showScreen(newValue='0',operation='0'){
     const screenTop=document.getElementById('screen-top');
     const screenBottom=document.getElementById('screen-bottom');
     screenTop.textContent = operation;
@@ -54,7 +51,14 @@ buttons.addEventListener('click', (event)=>{
         if (element.classList.contains('btn-number')){
             const obtainedNumber= element.innerHTML;
             console.log('You obtained a number, which is: '+ ' ' + obtainedNumber);
-            if (number=='0'){
+            
+            /* This line is to assign to 'number' the value to be used as second operand */
+            if (waitingforNewNumber===true){
+                number = obtainedNumber;
+                console.log('El valor del segundo operando es:'+number);
+                waitingforNewNumber=false;
+            }
+            else if (number=='0'){
                 if(checkPoint(number)){
                     number=(number+obtainedNumber);
                 }
@@ -66,7 +70,6 @@ buttons.addEventListener('click', (event)=>{
                 number=(number+obtainedNumber);
             }
             showScreen(number);
-            console.log('The new value is: '+ number);
         }
         /* This if checks if the button is C and clear it to default */
         else if (element.id === 'C'){
@@ -75,10 +78,14 @@ buttons.addEventListener('click', (event)=>{
         }
 
         else if (element.id==='point'){
-            if (!(checkPoint(number))){
-                number+=element.innerHTML;
-                showScreen(number);
+            if(waitingforNewNumber===true){
+                number = '0.';
+                waitingforNewNumber=false;
             }
+            else if (!(checkPoint(number))){
+                number+=element.innerHTML;
+            }
+            showScreen(number);
         }
 
         else if (element.classList.contains('operator')){
@@ -87,7 +94,7 @@ buttons.addEventListener('click', (event)=>{
             firstOperand=parseFloat(number);
 
             waitingOperator=false;
-            showScreen(firstOperand+operator)
+            showScreen(firstOperand,firstOperand+operator)
             console.log('El número del primer operando es: '+firstOperand+'El operador es: '+operator)
             number='0'
             }
@@ -96,7 +103,7 @@ buttons.addEventListener('click', (event)=>{
                 console.log('Perro')
                 secondOperand=parseFloat(number);
                 console.log('El valor del segundo operando es: '+secondOperand)
-                    showScreen(secondOperand)
+                    showScreen(secondOperand,firstOperand+operator)
                 }
                 else if(firstOperand && operator){
                     operator=element.innerHTML;
@@ -106,7 +113,7 @@ buttons.addEventListener('click', (event)=>{
                 else if(((secondOperand) && (element.classList.contains('operator') || element.id ==='equal-btn'))){
                 resultOperation=calculate(firstOperand,secondOperand,operator);
                 console.log('El resultado de la operación es: '+resultOperation);
-                showScreen(resultOperation);
+                showScreen(resultOperation,firstOperand+operator+secondOperand+'=');
                 number=firstOperand=resultOperation;
                 secondOperand=null;
                 }
