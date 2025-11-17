@@ -4,6 +4,7 @@ let firstOperand=null;
 let secondOperand=null;
 let waitingforNewNumber=false;
 let result = null;
+let isError = false;
 
 function calculate(num1, num2, operator){
 
@@ -30,6 +31,7 @@ function clearScreen(){
     secondOperand= null;
     waitingforNewNumber=false;
     result = null;
+    isError = false;
 }
 
 function showScreen(newValue='0',operation='0'){
@@ -70,6 +72,16 @@ let buttons = document.querySelector('.calculator-body');
 buttons.addEventListener('click', (event)=>{
         const element = event.target;
 
+        // Verify if there is an error and block the operation.
+        if (isError){
+            // Clears the error and restart the calculator.
+            if (element.id === 'C'){
+            clearScreen()
+        }
+        
+        // If input is not 'C', the click is ignored and continue displaying error message.
+        return
+        }
         /* This if checks if the button is a number and assign it to the variable number */
         if (element.classList.contains('btn-number')){
             const obtainedNumber= element.innerHTML;
@@ -125,9 +137,18 @@ buttons.addEventListener('click', (event)=>{
         /* If ready for calculate */
         if(firstOperand!==null && operator!==null && waitingforNewNumber===false){
             secondOperand=numberValue;
-            result = calculate(firstOperand,secondOperand,operator)
-            showScreen(result,listOperation())
-
+            const resultValue = calculate(firstOperand,secondOperand,operator)
+            
+            // Verify if there is an error by zero division and return.
+            if(String(resultValue).includes('Error')){
+                showScreen(resultValue,listOperation()+'0=');
+                isError=true;
+                return
+            }
+            
+            // Assigns calculate() value if there is no error.
+            result = resultValue;
+            showScreen(result,(listOperation()));
 
             firstOperand=result;
             number=String(result);
@@ -146,7 +167,18 @@ buttons.addEventListener('click', (event)=>{
         if(firstOperand!==null && operator !== null && waitingforNewNumber===false){
             const numberValue=parseFloat(number);
             secondOperand=numberValue
-            result = calculate(firstOperand,secondOperand,operator)
+
+            const resultValue = calculate(firstOperand,secondOperand,operator)
+            
+            // Verify if there is an error by zero division and return.
+            if(String(resultValue).includes('Error')){
+                showScreen(resultValue,listOperation()+'0=');
+                isError=true;
+                return
+            }
+            
+            // Assigns calculate() value if there is no error.
+            result = resultValue;
             showScreen(result,listOperation())
 
             //showScreen(result,(`${firstOperand} ${operator} ${numberValue} =`));
