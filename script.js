@@ -24,6 +24,13 @@ function calculate(num1, num2, operator){
 }
 
 function clearScreen(){
+
+    // Removes Error alert state on Clear button.
+    const clearBtn = document.getElementById('C');
+    if (clearBtn){
+        clearBtn.classList.remove('error-active');
+    }
+
     showScreen();
     number = '0';
     operator=null;
@@ -143,6 +150,12 @@ buttons.addEventListener('click', (event)=>{
             if(String(resultValue).includes('Error')){
                 showScreen(resultValue,listOperation()+'0=');
                 isError=true;
+                
+                // Assign Error alert state on Clear button.
+                const clearBtn = document.getElementById('C');
+                if (clearBtn){
+                    clearBtn.classList.add('error-active');
+                }
                 return
             }
             
@@ -174,6 +187,12 @@ buttons.addEventListener('click', (event)=>{
             if(String(resultValue).includes('Error')){
                 showScreen(resultValue,listOperation()+'0=');
                 isError=true;
+
+                // Assign Error alert state on Clear button.
+                const clearBtn = document.getElementById('C');
+                if (clearBtn){
+                    clearBtn.classList.add('error-active');
+                }
                 return
             }
             
