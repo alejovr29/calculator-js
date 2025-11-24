@@ -130,6 +130,30 @@ buttons.addEventListener('click', (event)=>{
             }
             showScreen(number,listOperation());
         }
+
+        else if(element.id==='percentage'){
+        if(firstOperand!==null && operator !== null && waitingforNewNumber===false){ // Assure % sign is only applied to secondOperator.
+            const numberValue=parseFloat(number);
+            secondOperand=numberValue;
+            secondOperand=secondOperand/100; // Assign the private percentage calculation.
+
+ 
+            const resultValue = calculate(firstOperand,secondOperand,operator);
+            result = resultValue;
+
+           // Display numberValue instead of secondOperand  in order to display original value + % sign in top-screen section.
+            showScreen(result,(firstOperand+operator+numberValue+'%'+'='))
+
+            /* Reset all operations */
+            firstOperand=null;
+            secondOperand=null;
+            operator=null;
+            number=String(result);
+            waitingforNewNumber=false;
+            result=null;
+        }
+    }
+
         else if (element.classList.contains('operator')){
             console.log('Hola presionaste un operador');
             const nextOperator=element.innerHTML;
@@ -176,12 +200,13 @@ buttons.addEventListener('click', (event)=>{
         console.log(`First number is ${firstOperand} and operator is ${operator}`)
         showScreen(firstOperand,listOperation())
     }
+
     else if(element.id==='equal-btn'){
         if(firstOperand!==null && operator !== null && waitingforNewNumber===false){
             const numberValue=parseFloat(number);
             secondOperand=numberValue
 
-            const resultValue = calculate(firstOperand,secondOperand,operator)
+            const resultValue = calculate(firstOperand,secondOperand,operator);
             
             // Verify if there is an error by zero division and return.
             if(String(resultValue).includes('Error')){
@@ -210,57 +235,6 @@ buttons.addEventListener('click', (event)=>{
             waitingforNewNumber=false;
             result=null;
         }
-    }
-        // else if (element.classList.contains('operator')){
-        //     console.log('Hola presionaste un operador');
-        //     operator=element.innerHTML;
-        //     firstOperand=parseFloat(number);
-
-        //     waitingOperator=false;
-        //     showScreen(firstOperand,firstOperand+operator)
-        //     console.log('El número del primer operando es: '+firstOperand+'El operador es: '+operator)
-        //     number='0'
-        //     }
-        // if (waitingOperator===false){
-        //         if (firstOperand && element.classList.contains('btn-number')){
-        //         console.log('Perro')
-        //         secondOperand=parseFloat(number);
-        //         console.log('El valor del segundo operando es: '+secondOperand)
-        //             showScreen(secondOperand,firstOperand+operator)
-        //         }
-        //         else if(firstOperand && operator){
-        //             operator=element.innerHTML;
-        //             console.log('cambiaste el operador por: '+operator)
-        //             return
-        //         }
-        //         else if(((secondOperand) && (element.classList.contains('operator') || element.id ==='equal-btn'))){
-        //         resultOperation=calculate(firstOperand,secondOperand,operator);
-        //         console.log('El resultado de la operación es: '+resultOperation);
-        //         showScreen(resultOperation,firstOperand+operator+secondOperand+'=');
-        //         number=firstOperand=resultOperation;
-        //         secondOperand=null;
-        //         }
-        //     }
-            
+    }       
 
 })
-
-
-
-
-/* Code below was meant for what I had several sections likely having the same class name, therefore itinerating along the results was the idea to avoid skipping anything*/
-
-// let buttons = document.querySelectorAll('.calculator-body')
-// buttons.forEach(button =>{
-//     button.addEventListener('click', (event)=>{
-//         const element = event.target
-
-//         /* This if checks if the button is a number and assign it to the variable number */
-//         if (element.classList.contains('btn-number')){
-//             console.log('Obtuviste un número, el cuál es'+ ' ' + element.innerHTML)
-//             number=element.innerHTML;
-//             return number
-//         }
-//         if (element.IDList.contains())
-//     })
-// })
