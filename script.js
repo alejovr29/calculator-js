@@ -237,4 +237,23 @@ buttons.addEventListener('click', (event)=>{
         }
     }       
 
+    else if (element.id === 'backspace'){
+        if(number.length>1 || (number.length === 1 && number !== '0')){
+
+            // Avoid deleting if the last value entered was an operator.
+            if(waitingforNewNumber===true){
+                return
+            }
+
+            // Deletes the last character of the string number on the screen
+            number=number.slice(0,-1);
+            console.log(number)
+            }
+            // If number gets empty it is replaced by 0 to avoid errors.
+            if(number === ''){
+                number='0';
+            }
+
+        showScreen(number,listOperation());
+        }
 })
