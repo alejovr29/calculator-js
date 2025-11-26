@@ -133,12 +133,19 @@ buttons.addEventListener('click', (event)=>{
 
         else if(element.id==='percentage'){
         if(firstOperand!==null && operator !== null && waitingforNewNumber===false){ // Assure % sign is only applied to secondOperator.
+            let  percentageValue;
             const numberValue=parseFloat(number);
             secondOperand=numberValue;
-            secondOperand=secondOperand/100; // Assign the private percentage calculation.
+
+            if(operator==='+' || operator==='-'){
+                percentageValue=firstOperand*(secondOperand/100); // Assign the private percentage calculation.
+            }
+            if(operator==='*' || operator==='/'){
+                percentageValue=secondOperand/100; // Assign the private percentage calculation.
+            }
 
  
-            const resultValue = calculate(firstOperand,secondOperand,operator);
+            const resultValue = calculate(firstOperand,percentageValue,operator);
             result = resultValue;
 
            // Display numberValue instead of secondOperand  in order to display original value + % sign in top-screen section.
