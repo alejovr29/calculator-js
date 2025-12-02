@@ -79,6 +79,12 @@ body{
 }
 }
 
+.operators svg{
+    width: 15px;
+    height: 15px;
+    stroke-width: 1.8;
+}
+
 #equal-btn{
     grid-row: span 2;
     height: 95%;

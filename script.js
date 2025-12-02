@@ -77,7 +77,7 @@ function listOperation(){
 let buttons = document.querySelector('.calculator-body');
 
 buttons.addEventListener('click', (event)=>{
-        const element = event.target;
+        const element = event.target.closest('button');
 
         // Verify if there is an error and block the operation.
         if (isError){
@@ -126,7 +126,7 @@ buttons.addEventListener('click', (event)=>{
                 waitingforNewNumber=false;
             }
             else if (!(checkPoint(number))){
-                number+=element.innerHTML;
+                number+=element.dataset.point;
             }
             showScreen(number,listOperation());
         }
@@ -163,7 +163,7 @@ buttons.addEventListener('click', (event)=>{
 
         else if (element.classList.contains('operator')){
             console.log('Hola presionaste un operador');
-            const nextOperator=element.innerHTML;
+            const nextOperator=element.dataset.operator;
             const numberValue=parseFloat(number);
 
         /* Replace operator value*/
