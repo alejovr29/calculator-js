@@ -239,7 +239,7 @@ buttons.addEventListener('click', (event)=>{
             secondOperand=null;
             operator=null;
             number=String(result);
-            waitingforNewNumber=false;
+            waitingforNewNumber=true;
             result=null;
         }
     }       
