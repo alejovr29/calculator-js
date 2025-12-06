@@ -2,7 +2,11 @@ let number='0'
 let operator=null;
 let firstOperand=null;
 let secondOperand=null;
+let repeatingOperand = null; // Saves secondOperand for repetition.
+let repeatingOperator = null; // Saves used Operator for repetition.
+let repeatedOperation = false; // Flag for Repeated Operations within equal-btn
 let waitingforNewNumber=false;
+
 let result = null;
 let isError = false;
 
@@ -60,6 +64,14 @@ function listOperation(){
         console.log('Codigo 1')
         return '0';
     }
+    else if(result !== null){
+        if(repeatedOperation){ // If there is a repeted operation.
+        console.log('Código repetición');
+        return firstOperand+repeatingOperator+repeatingOperand+'=';
+        }else{        
+        console.log('Codigo 4')
+        return firstOperand+operator+secondOperand+'=';}
+    }
     else if(operator!==null && waitingforNewNumber===true){
         console.log('Codigo 2')
         return firstOperand+operator;
@@ -67,10 +79,6 @@ function listOperation(){
     else if(result === null){
         console.log('Codigo 3')
         return firstOperand+operator;
-    }
-    else if(result !== null){
-        console.log('Codigo 4')
-        return firstOperand+operator+secondOperand+'=';
     }
 }
 
@@ -93,6 +101,7 @@ buttons.addEventListener('click', (event)=>{
         if (element.classList.contains('btn-number')){
             const obtainedNumber= element.innerHTML;
             console.log('You obtained a number, which is: '+ ' ' + obtainedNumber);
+            repeatedOperation=false;
             
             /* This line is to assign to 'number' the value to be used as second operand */
             if (waitingforNewNumber===true){
@@ -165,6 +174,7 @@ buttons.addEventListener('click', (event)=>{
             console.log('Hola presionaste un operador');
             const nextOperator=element.dataset.operator;
             const numberValue=parseFloat(number);
+            repeatedOperation=false;
 
         /* Replace operator value*/
         if(firstOperand!==null && waitingforNewNumber===true){
@@ -209,12 +219,45 @@ buttons.addEventListener('click', (event)=>{
     }
 
     else if(element.id==='equal-btn'){
-        if(firstOperand!==null && operator !== null && waitingforNewNumber===false){
-            const numberValue=parseFloat(number);
-            secondOperand=numberValue
 
-            const resultValue = calculate(firstOperand,secondOperand,operator);
+        let resultValue;
+
+        if(firstOperand===null || operator ===null){ // Exit the operation if there is no operand or operator.
+            return;
+        }
+        
+        if(repeatedOperation){ // Repeat the last operation using result as firstOperand
+            const numberValue=parseFloat(number);
+            firstOperand=numberValue
+            resultValue = calculate(firstOperand,repeatingOperand,repeatingOperator);
+        console.log(`Dentro de la repetición:
+            1) El valor original es: ${secondOperand} y el valor repetido es ${repeatingOperand}`)
+        console.log(`2) El valor original es: ${operator} y el valor repetido es ${repeatingOperator}`)
+        }
+
+
+
+
+        else if(firstOperand!==null && operator !== null){
+
+            if(waitingforNewNumber===false){ // If user does not provide a secondOperand and press = after operator, calculator uses firstOperand as value for secondOperand.
+                const numberValue=parseFloat(number);
+                secondOperand=numberValue;
+            } else{
+                secondOperand=firstOperand;
+                console.log('Segundo operador es el mismo primer operador.')
+            }
+
+            resultValue = calculate(firstOperand,secondOperand,operator);
+            // Assign values to repeatingOperator and repeatingOperand if needed */
+
+            repeatingOperand=secondOperand;
+            repeatingOperator=operator;
+
+            console.log(`1) El valor original es: ${secondOperand} y el valor repetido es ${repeatingOperand}`)
+            console.log(`2) El valor original es: ${operator} y el valor repetido es ${repeatingOperator}`)
             
+            }
             // Verify if there is an error by zero division and return.
             if(String(resultValue).includes('Error')){
                 showScreen(resultValue,listOperation()+'0=');
@@ -235,13 +278,14 @@ buttons.addEventListener('click', (event)=>{
             //showScreen(result,(`${firstOperand} ${operator} ${numberValue} =`));
 
             /* Reset all operations */
+            repeatedOperation=true;
             firstOperand=null;
             secondOperand=null;
             operator=null;
             number=String(result);
             waitingforNewNumber=true;
             result=null;
-        }
+        
     }       
 
     else if (element.id === 'backspace'){
