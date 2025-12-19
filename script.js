@@ -300,3 +300,57 @@ buttons.addEventListener('click', (event)=>{
         showScreen(number,listOperation());
         }
 })
+
+// Event listener for keyboard input support
+
+document.addEventListener("keydown", (event) => {
+    const key = event.key;
+
+    // 1. Numbers (0–9)
+    if (!isNaN(key)) {
+        const btn = document.querySelector(`.btn-number:nth-of-type(${Number(key) === 0 ? 11 : Number(key)})`);
+        // The 0 is selected by its text
+        const btnNumber = [...document.querySelectorAll('.btn-number')]
+            .find(b => b.textContent === key);
+        
+        if (btnNumber) btnNumber.click();
+        return;
+    }
+
+    // 2. Point (.)
+    if (key === '.') {
+        const pointBtn = document.getElementById("point");
+        if (pointBtn) pointBtn.click();
+        return;
+    }
+
+    // 3. Operators + - * /
+    if (['+', '-', '*', '/'].includes(key)) {
+        const operatorBtn = document.querySelector(`[data-operator="${key}"]`);
+        if (operatorBtn) operatorBtn.click();
+        return;
+    }
+
+    // 4. Equal (= or Enter)
+    if (key === '=' || key === 'Enter') {
+        const equalBtn = document.getElementById("equal-btn");
+        if (equalBtn) equalBtn.click();
+        event.preventDefault(); // Avoid send forms
+        return;
+    }
+
+    // 5. Backspace
+    if (key === 'Backspace') {
+        const backBtn = document.getElementById("backspace");
+        if (backBtn) backBtn.click();
+        event.preventDefault();
+        return;
+    }
+
+    // 6. Clear → “Escape” key
+    if (key === 'Escape' || key === 'C' || key === 'c' ) {
+        const clearBtn = document.getElementById("C");
+        if (clearBtn) clearBtn.click();
+        return;
+    }
+});
